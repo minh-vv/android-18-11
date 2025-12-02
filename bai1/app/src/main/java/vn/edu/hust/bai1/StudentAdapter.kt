@@ -2,34 +2,26 @@ package vn.edu.hust.bai1
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import vn.edu.hust.bai1data.Student
 
 class StudentAdapter(
     private val students: MutableList<Student>,
-    private val onEditClick: (Student) -> Unit,
-    private val onDeleteClick: (Student) -> Unit
+    private val onItemClick: (Student, Int) -> Unit
 ) : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
 
     inner class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvMssv: TextView = itemView.findViewById(R.id.tvMssv)
-        val btnDelete: ImageView = itemView.findViewById(R.id.btnDelete)
 
-        fun bind(student: Student) {
+        fun bind(student: Student, position: Int) {
             tvName.text = student.name
             tvMssv.text = student.mssv
 
-            // Xử lý khi nhấn vào nút xóa
-            btnDelete.setOnClickListener {
-                onDeleteClick(student)
-            }
-
-            // Xử lý khi nhấn vào dòng (để sửa)
+            // Xử lý khi nhấn vào dòng
             itemView.setOnClickListener {
-                onEditClick(student)
+                onItemClick(student, position)
             }
         }
     }
@@ -40,7 +32,7 @@ class StudentAdapter(
     }
 
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
-        holder.bind(students[position])
+        holder.bind(students[position], position)
     }
 
     override fun getItemCount(): Int = students.size

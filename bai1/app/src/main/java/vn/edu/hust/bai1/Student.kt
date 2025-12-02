@@ -1,6 +1,39 @@
 package vn.edu.hust.bai1data
 
-class Student(
+import android.os.Parcel
+import android.os.Parcelable
+
+data class Student(
+    var mssv: String,
     var name: String,
-    var mssv: String
-)
+    var phone: String,
+    var address: String
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: ""
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(mssv)
+        parcel.writeString(name)
+        parcel.writeString(phone)
+        parcel.writeString(address)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Student> {
+        override fun createFromParcel(parcel: Parcel): Student {
+            return Student(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Student?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
